@@ -1,0 +1,6 @@
+Napisz program w języku Python, który zawiera 
+- klasę "Lotto", która będzie inicjowana przez listę 5 lub 6 liczb całkowitych z zakresu <0,48>
+- funkcję "SPRAWDZ", która porównuje czy dwa obiekty klasy zawierają takie same liczby (w dowolnej kolejności)
+- funkcję "GRAJ", która wczyta odpowiednia ilość danych i sprawdzi trafienia 
+- Wylosuj 1000 zestawów 6 liczb z zakresu <0,48>, policz ilość wystąpień i posortuj najczęściej występujące liczby
+- Wyniki zapisz do pliku, którego nazwa jest konkatenacją dwóch pierwszych elementów listy.

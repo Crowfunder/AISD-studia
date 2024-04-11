@@ -5,13 +5,14 @@ class Data():
 	def DODAJ(self, param):
 
 		# words don't end with spaces, lol
-		if ord(str(self.value)) > ord(str(param.value)):
-			n = str(ord(str(self.value)))
-		else:
-			ord(str(param.value))
+		n = ''
+		if type(self.value) is str:
+			n = str(ord(str(self.value)[-1]))
+		elif type(param.value) is str:
+			n = str(ord(str(param.value)[-1]))
 		if type(param.value) != type(self.value):
-			return str(param.value) + str(self.value) + n
-		return param.value + self.value
+			return str(self.value) + str(param.value) + n
+		return self.value + param.value 
 
 
 class LICZBA(Data):
@@ -22,4 +23,6 @@ class LICZBA(Data):
 class WYRAZ(Data):
 	def __init__(self, value: str):
 		self.value = str(value).strip()
+
+
 
