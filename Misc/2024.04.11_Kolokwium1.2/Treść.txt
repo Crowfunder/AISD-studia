@@ -1,0 +1,7 @@
+Napisz w języku Python moduł ABC w którym zostanie zawarta:
+1. metoda OTWIERAM otwierająca plik "lorem16.txt;
+2. metoda CZYTAJ wczytująca parzyste linie tego pliku;
+3. metoda POKAZ zwracająca wszystkie wyrazy, które mają w tekście duplikat (wielkość liter jest rozróżnialna);
+4. metoda LICZ zwracająca ilość samogłosek w ciągu;
+5. metoda ZAMKNIJ zamykająca plik.
+6. Wyświetl duplikat posiadający największą ilość samogłosek.
