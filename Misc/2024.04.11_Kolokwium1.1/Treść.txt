@@ -1,0 +1,8 @@
+#napisz klase czytelnik w ktorej bedzie zawarta
+#metoda OTWORZ otwierająca plik
+#metoda CZYTAM wczytująca nieparzyste linie pliku
+#metoda SZUKAM wyszukująca w tekscie ciąg znakowy (spr czy istnieje)
+#metoda LICZ ktora policzy wystąpienie litery bedącej jej argumentem
+#metoda ZAMYKAM zamykająca plik
+#nastepnie wykorzystaj klase CZYTELNIK aby znalezc najczesciej wystepującą litere w nieparzystych liniach pliku
+#przetestuj działanie na pliku
