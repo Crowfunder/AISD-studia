@@ -13,8 +13,18 @@ def InsertionSort(input_list):
 	return input_list
 
 
-def MergeSort(input_list):
-	pass	
+def MergeSort(input_list, list_start, list_end):
+	if list_start < list_end:
+		list_mid = (list_start+list_end)/2
+		MergeSort(input_list, list_start, list_mid)
+		MergeSort(input_list, list_mid+1, list_mid)
+		Merge(input_list, list_start, list_mid, list_end)
+
+
+def Merge(input_list, list_start, list_mid, list_end):
+	list_a = input_list[list_start : list_mid]
+	list_b = input_list[list_mid : list_end]
+	
 
 
 def GenerateDataset(n_of_sets, items_per_set):
@@ -30,7 +40,7 @@ def GenerateDataset(n_of_sets, items_per_set):
 def sort_test():
 	test_list = [5,2,6,3,7,1,4]
 	print(f'Insertion: {InsertionSort(test_list)}')
-	print(f'Merge: {MergeSort(test_list)}')
+	print(f'Merge: {MergeSort(test_list, 0, len(test_list))}')
 
 
 def main():
@@ -45,7 +55,7 @@ def main():
 		insertion_time.append(time()-start)
 	
 		start = time()
-		MergeSort(single_set)
+		MergeSort(single_set, 0, len(single_set))
 		merge_time.append(time()-start)
 
 	print('\nINSERTION SORT\n-----------------')
