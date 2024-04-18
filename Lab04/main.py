@@ -54,14 +54,14 @@ def Merge(input_list, list_start, list_mid, list_end):
 	"""
 	Merge two sorted subarrays of `input_list` into a single sorted subarray.
 
-	Args:
-		input_list (list): The input list containing the subarrays to be merged.
-		list_start (int): The starting index of the first subarray.
-		list_mid (int): The ending index of the first subarray and the starting index of the second subarray.
-		list_end (int): The ending index of the second subarray.
+	Parameters
+	input_list (list): The input list containing the subarrays to be merged.
+	list_start (int): The starting index of the first subarray.
+	list_mid (int): The ending index of the first subarray and the starting index of the second subarray.
+	list_end (int): The ending index of the second subarray.
 
 	Returns:
-		list: The input list with the merged subarrays.
+	list: The input list with the merged subarrays.
 
 	"""
 	nstart = list_mid - list_start
