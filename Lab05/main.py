@@ -15,21 +15,26 @@ def HanoiRecursive(n, sour, dest, buff):
 
 
 def HanoiIter(n, sour, dest, buff, hanoi_data):
-	moves = 1
-	while hanoi_data[sour] or hanoi_data[buff]:
-		for i in range(1,n):
-			if i%3 == 1:
-				MoveLog(i, sour, dest, moves)
-				hanoi_data[dest].append(hanoi_data[sour].pop())
-				moves += 1
-			if i%3 == 2:
-				MoveLog(i, sour, buff, moves)
-				hanoi_data[dest].append(hanoi_data[sour].pop())
-				moves += 1
-			if i%3 == 0:
-				MoveLog(i, buff, dest, moves)
-				hanoi_data[dest].append(hanoi_data[sour].pop())
-				moves += 1
+	moves = pow(2, n)-1
+	#while hanoi_data[sour] or hanoi_data[buff]:
+	for i in range(1,moves):
+		if i % 3 == 1:
+			if hanoi_data[sour]:
+				pickup = hanoi_data[sour].pop()
+				MoveLog(pickup, sour, dest, moves)
+				hanoi_data[dest].append(pickup)
+		elif i % 3 == 2:
+			if hanoi_data[sour]:
+				pickup = hanoi_data[sour].pop()
+				MoveLog(pickup, sour, buff, moves)
+				hanoi_data[buff].append(pickup)
+		elif i % 3 == 0:
+			if hanoi_data[buff]:
+				pickup = hanoi_data[buff].pop()
+				MoveLog(pickup, buff, dest, moves)
+				hanoi_data[dest].append(pickup)
+
+	return hanoi_data
 
 
 def main():
@@ -40,7 +45,7 @@ def main():
 	HanoiRecursive(4, 'SOUR', 'DEST', 'BUFF')
 	
 	hanoi_data = {'SOUR': [3,2,1], 'DEST' : [], 'BUFF' : []}
-	HanoiIter(3, 'SOUR', 'DEST', 'BUFF', hanoi_data)
+	print(HanoiIter(3, 'SOUR', 'DEST', 'BUFF', hanoi_data))
 
 if __name__ == '__main__':
 	main()
