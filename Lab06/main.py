@@ -1,109 +1,63 @@
-import math
+from re import S
+from BSTree import BSTrees
+import numpy as np
+from time import time
+import random
 
-class TreeNode:
-	def __init__(self, value=None):
-		self.right = None
-		self.left = None
-		self.value = value
+SEPARATOR = '\n############################'
 
-	def insert(self, input_val):
-		if input_val == self.value:
-			return
-		
-		if input_val > self.value:
-			if self.right:
-				self.right.insert(input_val)
-				return
-			self.right = TreeNode(input_val)
-			return
-		
-		if self.left:
-			self.left.insert(input_val)
-			return
-		
-		self.left = TreeNode(input_val)
-
-	def search(self, input_val):
-		if input_val == self.value:
-			return True
-		
-		if input_val > self.value:
-			if self.right:
-				return self.right.search(input_val)
-			else:
-				return False
-
-		if self.left:
-			return self.left.search(input_val)
-		else:
-			return False
-
-	def visualize(self, depth=0):
-		print(depth*'-', self.value, end='', sep='')
-		depth += 1
-		if self.left:
-			self.left.visualize(depth)
-		if self.right:
-			if self.left:
-				print('\n', ' '*3*depth, end='', sep='')
-			self.right.visualize(depth)
-
-	def minimum(self):
-		if self.left:
-			return self.left.minimum()
-		return self.value
-
-	def maximum(self):
-		if self.right:
-			return self.right.maximum()
-		return self.value
-
-
-
-def DataToTree(input_list: list[float]):
+def GenerateAllDatasets(lengths: list[int]):
 	output = {}
-	done_list = []
-	node_previous = TreeNode() 	# unnecessary line, it just makes linter feel good
-
-	for number in input_list:
-		index = math.floor(number) + 0.5
-		if index not in done_list:
-
-			done_list.append(index)
-			node = TreeNode(index)
-			output[index] = node
-			node_previous = node
-
-		node_previous.insert(number)
-	
+	for length in lengths:
+		output[length] = GenerateOneDataset(length, length/10)
 	return output
 
 
-def SearchTree(root_list: dict, num: float):
-	num_index = math.floor(num) + 0.5
-	try:
-		root = root_list[num_index]
-		return root.search(num)
-	except KeyError:
-		return False
+def GenerateOneDataset(length, max_float):
+	return sorted(list(np.random.uniform(low=0.01, high=max_float, size=(length,)).round(2)))
 
 
-def PrintTree(root_list: dict):
-	for root in root_list.values():
-		root.visualize()
-		print('\n')
+def main():
+	# sample_data = [1.3, 1.6, 3.7, 4.0, 4.99, 7.3, 7.8, 7.7, 7.9, 7.6, 9.3]
+	# sample_trees = BSTrees(sample_data)
+	# # sample_trees.PrintTree()
+	# sample_trees.DataToTrees([6.99, 21.37, 21.33])
+	# # sample_trees.PrintTree()
+	# print(sample_trees.MaximumInTree(4))
 
-def MinimumInTree(root_list: dict, root_choice):
-	root_choice = math.floor(root_choice) + 0.5
-	return root_list[root_choice].minimum()
+	operation_iterations = 10000
+
+	samples_dict = GenerateAllDatasets([25, 50, 100, 500, 1000])
+
+	for length in samples_dict.keys():
+		print(SEPARATOR)
+
+		print(f'Dataset of {length} values in range (0.01, {length/10})')
+		start = time()
+		for _ in range(0,operation_iterations//100):
+			test_trees = BSTrees(samples_dict[length])
+		print(f'Insertion of values into BST: {(time()-start)/(length*operation_iterations)}s/sample')
+
+		searched_float = samples_dict[length][length//2] # pick middle element from dataset
+		start = time()
+		for _ in range(0,operation_iterations):
+			test = test_trees.SearchTree(searched_float)
+		print(f'Search for value in BST: {(time()-start)/(length*operation_iterations)}s/sample')
+
+		chosen_tree_id = random.choice(list(test_trees.root_dict.keys())) # pick random tree to search through
+		start = time()
+		for _ in range(0,operation_iterations):
+			test = test_trees.MaximumInTree(chosen_tree_id)
+		print(f'Maximum value in selected BST tree: {(time()-start)/(length*operation_iterations)}s/sample')
+		
+		start = time()
+		for _ in range(0,operation_iterations):
+			test = test_trees.MinimumInTree(chosen_tree_id)
+		print(f'Minimum value in selected BST tree: {(time()-start)/(length*operation_iterations)}s/sample')
 
 
-def MaximumInTree(root_list: dict, root_choice):
-	root_choice = math.floor(root_choice) + 0.5
-	return root_list[root_choice].maximum()
 
 
-sample_data = [1.3, 1.6, 3.7, 4.0, 4.99, 7.3, 7.8, 7.7, 7.9, 7.6, 9.3]
-ret = DataToTree(sample_data)
-PrintTree(ret)
-print(MaximumInTree(ret, 7))
+
+if __name__ == '__main__':
+	main()
