@@ -72,8 +72,6 @@ def PatternSearchRabinKarp(data, pattern, matrix_size):
 	patterns_found: list[tuple] = []
 	ptrn_len = len(pattern)   # let's avoid multiple len() calls
 	hash_ptrn = 0
-	hash_text_x = 0
-	hash_text_y = 0
 	h = 1       # ??? some funky math stuff ig
 	d = 16      # 16 digits in base16, or maybe 17 idk it works either way
 	q = 101     # why the hell is it 101 I have genuinely no idea, just some prime number
