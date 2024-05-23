@@ -5,7 +5,7 @@
 
 from TSP_utils import ParseTSPFile, CalculatePathLength
 from TSP_algorithms import PathFinderGreedy, PathFinderIterRoulette, PathFinderSimple
-from TSP_tests import RouletteIterTester
+from TSP_tests import RouletteIterTester, TimeEffectivenessTester
 
 
 def main():
@@ -20,7 +20,9 @@ def main():
 	# print(CalculatePathLength(TSP_data, path_simple))
 	# print(CalculatePathLength(TSP_data, path_greedy))
 	# print(CalculatePathLength(TSP_data, path_random_iter))
-	RouletteIterTester(TSP_data, 'roulette.csv', 300, repetitions=20)
+	# RouletteIterTester(TSP_data, 'roulette.csv', 300, repetitions=20)
+
+	TimeEffectivenessTester(TSP_data, 100)
 
 if __name__ == '__main__':
 	main()
