@@ -1,4 +1,3 @@
-from re import S
 from BSTree import BSTrees
 import numpy as np
 from time import time
