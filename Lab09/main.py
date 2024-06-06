@@ -1,5 +1,6 @@
 ######################
 # by Crowfunder
+# with love
 ######################
 
 import numpy as np
@@ -29,12 +30,9 @@ class Package:
 		self.id = id
 		self.width = width
 		self.height = height
+		self.volume = width*height
 		self.value = value
-		self.gain = value/(width*height)
-
-	# # If the object gets printed, print just its id
-	# def __str__(self):
-	# 	return str(self.id)
+		self.gain = value/self.volume
 
 	def rotate(self):
 		self.width, self.height = self.height, self.width
@@ -45,15 +43,37 @@ class Backpack:
 	def __init__(self, size):
 		self.size = int(size)
 		self.matrix = np.zeros((self.size, self.size), dtype=int)
-		self.prev_matrix = self.matrix
 		self.total_value = 0
+		self.prev_state = None
 
-	def render(self):
-		print(self.matrix)
+	# If this object gets printed, print its matrix
+	def __str__(self):
+		return str(self.matrix)
 
+	# Memento pattern, we can save the previous state of the object
+	# so that we can go back in time (undo) in case we need it
+	def save_state(self):
+		prev_state = Backpack(self.size)
+		prev_state.matrix = self.matrix
+		prev_state.total_value = self.total_value
+		prev_state.prev_state = self.prev_state
+		self.prev_state = prev_state
+		return self
+	
+	def restore_state(self):
+		if not self.prev_state:
+			self.prev_state = Backpack(self.size)
+		self.matrix = self.prev_state.matrix
+		self.total_value = self.prev_state.total_value
+		self.prev_state = self.prev_state.prev_state
+		return self
+
+	# We cannot get the return value of the first _insert call
+	# so we return True manually if it succeeds
 	def insert_package(self, package_obj):
 		if not self._insert(package_obj):
-			self._insert(package_obj.rotate())
+			return self._insert(package_obj.rotate())
+		return True
 
 	def _insert(self, package_obj):
 		for x in range(self.size - package_obj.width+1):
@@ -78,33 +98,53 @@ class Backpack:
 		return False
 
 
+# Sort all packages based on value to size ratio and insert them in that order
 def BackpackerGreedy(size, packages_list):
 
-	# Sort all packages based on value to size ratio
 	packages_list.sort(key=lambda x: x.gain, reverse=True)
 	backpack = Backpack(size)
 	for package_obj in packages_list:
 		backpack.insert_package(package_obj)
 
 	print(backpack.total_value)
-	backpack.render()
+	print(backpack)
 	return backpack
 
 
-def BackpackerGambler(size, packages_list):
+def BackpackerGambler(size, packages_list, iterations):
 	backpack = Backpack(size)
-	random.shuffle(packages_list)
+	for _ in range(iterations):
+		backpack.save_state()
+		random.shuffle(packages_list)
+		for package_obj in packages_list:
+			backpack.insert_package(package_obj)
+
+		# If what we gambled is worse than previously, go back in time and keep gambling
+		if backpack.total_value < backpack.prev_state.total_value:
+			backpack.restore_state()
+
+	print(backpack.total_value)
+	print(backpack)
+	return backpack
+
+
+def BackpackerULTRAGREED(size, packages_list):
+	packages_list.sort(key=lambda x: x.value, reverse=True)
+	backpack = Backpack(size)
 	for package_obj in packages_list:
 		backpack.insert_package(package_obj)
 
 	print(backpack.total_value)
-	backpack.render()
+	print(backpack)
 	return backpack
+
 
 def main():
 	packages = PackageFileParser([20])
-	BackpackerGreedy(20, packages[20])
-	BackpackerGambler(20, packages[20])
+	#BackpackerGreedy(20, packages[20])
+	# BackpackerGambler(20, packages[20], 1)
+	# BackpackerGambler(20, packages[20], 15)
+	BackpackerULTRAGREED(20, packages[20])
 
 if __name__ == '__main__':
 	main()
