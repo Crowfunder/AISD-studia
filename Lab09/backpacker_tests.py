@@ -3,7 +3,6 @@
 # with love
 ######################
 
-from bdb import effective
 from time import time
 from backpacker_algorithms import BackpackerGambler, BackpackerGreedy, BackpackerULTRAGREED
 
